@@ -21,4 +21,19 @@ export class RegionService {
   }
 
   //Create a region
+  async create(region: Region): Promise<Region> {
+    const newRegion = this.regionRepository.create(region);
+    return await this.regionRepository.save(newRegion);
+  }
+
+  //Update a region
+  async update(id: number, region: Region): Promise<Region> {
+    await this.regionRepository.update(id, region);
+    return await this.regionRepository.findOne({ where: { id } });
+  }
+
+  //Delete a region
+  async delete(id: number): Promise<void> {
+    await this.regionRepository.delete(id);
+  }
 }
