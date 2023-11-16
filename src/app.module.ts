@@ -4,20 +4,24 @@ import { AppService } from './app.service';
 import { RegionModule } from './region/region.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { PropertyModule } from './property/property.module';
+import { LeadModule } from './lead/lead.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     RegionModule,
     TypeOrmModule.forRoot({
-      type: process.env.DB_TYPE as any,
-      host: process.env.PG_HOST,
-      username: process.env.PG_USER,
-      password: process.env.PG_PASSWORD,
-      database: process.env.PG_DB,
+      type: 'postgres',
+      host: 'localhost',
+      username: 'crazy1ndn',
+      password: 'null',
+      database: 'crazy1ndn',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
+    PropertyModule,
+    LeadModule,
   ],
   controllers: [AppController],
   providers: [AppService],

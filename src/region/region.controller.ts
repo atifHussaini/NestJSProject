@@ -13,6 +13,7 @@ export class RegionController {
   }
 
   //Get one region
+  @Get(':id')
   async findOne(@Param('id') id: number): Promise<Region> {
     //handle the error if region does not exist
     const user = await this.regionService.findOne(id);

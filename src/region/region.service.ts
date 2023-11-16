@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRespository } from '@nestjs/typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Region } from './region.entity';
 
 @Injectable()
 export class RegionService {
   constructor(
-    @InjectRespository(Region)
+    @InjectRepository(Region)
     private regionRepository: Repository<Region>,
   ) {}
 
