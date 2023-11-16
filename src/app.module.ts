@@ -5,7 +5,9 @@ import { RegionModule } from './region/region.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { PropertyModule } from './property/property.module';
-import { LeadModule } from './lead/lead.module';
+import { Region } from './region/region.entity';
+import { Property } from './property/property.entity';
+import { Lead } from './lead/lead.entity';
 
 @Module({
   imports: [
@@ -21,7 +23,7 @@ import { LeadModule } from './lead/lead.module';
       synchronize: true,
     }),
     PropertyModule,
-    LeadModule,
+    TypeOrmModule.forFeature([Region, Property, Lead]),
   ],
   controllers: [AppController],
   providers: [AppService],
