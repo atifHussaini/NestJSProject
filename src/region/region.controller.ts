@@ -24,11 +24,11 @@ export class RegionController {
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<Region> {
     //handle the error if region does not exist
-    const user = await this.regionService.findOne(Number(id));
-    if (!user) {
+    const region = await this.regionService.findOne(Number(id));
+    if (!region) {
       throw new Error('Region not found!!');
     } else {
-      return user;
+      return region;
     }
   }
 
