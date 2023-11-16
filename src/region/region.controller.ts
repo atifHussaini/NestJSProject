@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Put,
+} from '@nestjs/common';
 import { RegionService } from './region.service';
 import { Region } from './region.entity';
 
@@ -14,9 +22,9 @@ export class RegionController {
 
   //Get one region
   @Get(':id')
-  async findOne(@Param('id') id: number): Promise<Region> {
+  async findOne(@Param('id') id: string): Promise<Region> {
     //handle the error if region does not exist
-    const user = await this.regionService.findOne(id);
+    const user = await this.regionService.findOne(Number(id));
     if (!user) {
       throw new Error('Region not found!!');
     } else {
@@ -32,17 +40,20 @@ export class RegionController {
 
   //Update region
   @Put(':id')
-  async update(@Param('id') id: number, @Body() region: Region): Promise<Region> {
-    return this.regionService.update(id, region);
+  async update(
+    @Param('id') id: string,
+    @Body() region: Region,
+  ): Promise<Region> {
+    return this.regionService.update(Number(id), region);
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: number): Promise<void> {
+  async delete(@Param('id') id: string): Promise<void> {
     //handle the error if region not found
-    const user = await this.regionService.findOne(id);
+    const user = await this.regionService.findOne(Number(id));
     if (!user) {
       throw new Error('Region not found!!');
     }
-    return this.regionService.delete(id);
+    return this.regionService.delete(Number(id));
   }
 }

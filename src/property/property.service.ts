@@ -1,8 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Property } from './property.entity';
-import { CreatePostDto } from './create-property.dto';
 
 @Injectable()
 export class PropertyService {
@@ -11,35 +10,56 @@ export class PropertyService {
     private propertyRepository: Repository<Property>,
   ) {}
 
-  //Create a property
-  async create(createPostDto: CreatePostDto): Promise<Property> {
-    const region = await this.propertyRepository.findOne(createPostDto.regionId);
-    if (!region) {
-      throw new NotFoundException(
-        `User with ID ${createPostDto.regionId} not found`,
-      );
-    }
-
-    const newProperty = this.propertyRepository.create({
-      address: createPostDto.address,
-      data: createPostDto.data,
-      regionId: region,
-    });
-
-    return this.propertyRepository.save(newProperty);
+  //Get all properties
+  async findAll(): Promise<Property[]> {
+    return await this.propertyRepository.find({ relations: ['region'] });
   }
 
-  //Get all properties
+  //Get a property
+  async findOne(id: number): Promise<Property> {
+    return await this.propertyRepository.findOne({
+      where: { id },
+      relations: ['region'],
+    });
+  }
 
+  //Create a property
+  async create(property: Property): Promise<Property> {
+    const newProperty = this.propertyRepository.create(property);
+    return await this.propertyRepository.save(newProperty);
+  }
 
   //Update a property
-  async update(id: number, property: Property): Promise<Property> {
-    await this.propertyRepository.update(id, property);
-    return await this.propertyRepository.findOne({ where: { id } });
+  async update(id: number, updateProperty: Property): Promise<Property> {
+    await this.propertyRepository.update(id, updateProperty);
+    return await this.propertyRepository.findOne({
+      where: { id },
+      relations: ['region'],
+    });
   }
 
-  //Delete a region
+  //Delete a property
   async delete(id: number): Promise<void> {
     await this.propertyRepository.delete(id);
   }
+
+  //Create a property
+  //   async create(createPostDto: CreatePostDto): Promise<Property> {
+//     const region = await this.propertyRepository.findOne(
+//       createPostDto.regionId,
+//     );
+//     if (!region) {
+//       throw new NotFoundException(
+//         `User with ID ${createPostDto.regionId} not found`,
+//       );
+//     }
+
+//     const newProperty = this.propertyRepository.create({
+//       address: createPostDto.address,
+//       data: createPostDto.data,
+//       regionId: region,
+//     });
+
+//     return this.propertyRepository.save(newProperty);
+
 }

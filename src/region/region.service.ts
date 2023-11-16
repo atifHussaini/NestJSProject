@@ -12,12 +12,15 @@ export class RegionService {
 
   //Get all regions
   async findAll(): Promise<Region[]> {
-    return await this.regionRepository.find();
+    return await this.regionRepository.find({ relations: ['properties'] });
   }
 
-  //Get one region
+  //Get a region
   async findOne(id: number): Promise<Region> {
-    return await this.regionRepository.findOne({ where: { id } });
+    return await this.regionRepository.findOne({
+      where: { id },
+      relations: ['properties'],
+    });
   }
 
   //Create a region
@@ -27,9 +30,12 @@ export class RegionService {
   }
 
   //Update a region
-  async update(id: number, region: Region): Promise<Region> {
-    await this.regionRepository.update(id, region);
-    return await this.regionRepository.findOne({ where: { id } });
+  async update(id: number, updateRegion: Region): Promise<Region> {
+    await this.regionRepository.update(id, updateRegion);
+    return await this.regionRepository.findOne({
+      where: { id },
+      relations: ['properties'],
+    });
   }
 
   //Delete a region
