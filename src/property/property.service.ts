@@ -42,24 +42,4 @@ export class PropertyService {
   async delete(id: number): Promise<void> {
     await this.propertyRepository.delete(id);
   }
-
-  //Create a property
-  //   async create(createPostDto: CreatePostDto): Promise<Property> {
-//     const region = await this.propertyRepository.findOne(
-//       createPostDto.regionId,
-//     );
-//     if (!region) {
-//       throw new NotFoundException(
-//         `User with ID ${createPostDto.regionId} not found`,
-//       );
-//     }
-
-//     const newProperty = this.propertyRepository.create({
-//       address: createPostDto.address,
-//       data: createPostDto.data,
-//       regionId: region,
-//     });
-
-//     return this.propertyRepository.save(newProperty);
-
 }

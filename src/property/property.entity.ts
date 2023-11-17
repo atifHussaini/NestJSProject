@@ -20,9 +20,8 @@ export class Property {
   @Column()
   address: string;
 
-  @Column()
-  //Record<any, any>
-  data: JSON;
+  @Column({ type: 'varchar' })
+  data: Record<any, any>;
 
   @CreateDateColumn()
   created_at: Date;

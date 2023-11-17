@@ -1,12 +1,12 @@
 import {
   Entity,
-    Column,
-    PrimaryGeneratedColumn,
-    OneToOne,
-    JoinColumn,
-    CreateDateColumn,
-    UpdateDateColumn,
-    DeleteDateColumn,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToOne,
+  JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 import { Property } from '../property/property.entity';
 
