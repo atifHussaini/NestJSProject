@@ -8,6 +8,7 @@ import { PropertyModule } from './property/property.module';
 import { Region } from './region/region.entity';
 import { Property } from './property/property.entity';
 import { Lead } from './lead/lead.entity';
+import { LeadModule } from './lead/lead.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { Lead } from './lead/lead.entity';
       synchronize: true,
     }),
     PropertyModule,
+    LeadModule,
     TypeOrmModule.forFeature([Region, Property, Lead]),
   ],
   controllers: [AppController],

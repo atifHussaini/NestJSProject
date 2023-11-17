@@ -20,6 +20,30 @@ export class LeadController {
     return await this.leadService.findAll();
   }
 
+  //Get all leads sorted by leadScore
+  @Get('/sorted/leadScore')
+  async findAllSortedLeadScore(@Param('leadScore') leadScore: number) {
+    return await this.leadService.findAllSortedLeadScore(leadScore);
+  }
+
+  //Get all leads sorted by created_at
+  @Get('/sorted/:createdAt')
+  async findAllSortedCreatedAt() {
+    return await this.leadService.findAllSortedCreatedAt();
+  }
+
+  //Get a lead
+  @Get(':id')
+  async findOne(@Param('id') id: string): Promise<Lead> {
+    //handle the error if lead does not exist
+    const lead = await this.leadService.findOne(Number(id));
+    if (!lead) {
+      throw new Error('Lead not found!!');
+    } else {
+      return lead;
+    }
+  }
+
   @Post()
   async create(@Body() lead: Lead): Promise<Lead> {
     return await this.leadService.create(lead);

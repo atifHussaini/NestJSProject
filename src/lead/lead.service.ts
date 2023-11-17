@@ -23,6 +23,24 @@ export class LeadService {
     });
   }
 
+  //Get all sorted by lead score
+  async findAllSortedLeadScore(leadScore: number): Promise<Lead[]> {
+    return await this.leadRepository.find({
+      order: {
+        [leadScore]: 'ASC',
+      },
+    });
+  }
+
+  //Get all sorted by creation date
+  async findAllSortedCreatedAt(): Promise<Lead[]> {
+    return await this.leadRepository.find({
+      order: {
+        created_at: 'ASC',
+      },
+    });
+  }
+
   //Create a lead
   async create(lead: Lead): Promise<Lead> {
     const newLead = this.leadRepository.create(lead);

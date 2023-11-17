@@ -23,7 +23,7 @@ export class PropertyController {
   //Get a property
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<Property> {
-    //handle the error if region does not exist
+    //handle the error if property does not exist
     const property = await this.propertyService.findOne(Number(id));
     if (!property) {
       throw new Error('Property not found!!');
