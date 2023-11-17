@@ -7,8 +7,39 @@ import { Lead } from './lead.entity';
 export class LeadService {
   constructor(
     @InjectRepository(Lead)
-    private propertyRepository: Repository<Lead>,
+    private leadRepository: Repository<Lead>,
   ) {}
 
   //Get all leads
+  async findAll(): Promise<Lead[]> {
+    return await this.leadRepository.find({ relations: ['property'] });
+  }
+
+  //Get one lead
+  async findOne(id: number): Promise<Lead> {
+    return await this.leadRepository.findOne({
+      where: { id },
+      relations: ['property'],
+    });
+  }
+
+  //Create a lead
+  async create(lead: Lead): Promise<Lead> {
+    const newLead = this.leadRepository.create(lead);
+    return await this.leadRepository.save(newLead);
+  }
+
+  //Update a lead
+  async update(id: number, updateLead: Lead): Promise<Lead> {
+    await this.leadRepository.update(id, updateLead);
+    return await this.leadRepository.findOne({
+      where: { id },
+      relations: ['property'],
+    });
+  }
+
+  //Delete a lead
+  async delete(id: number): Promise<void> {
+    await this.leadRepository.delete(id);
+  }
 }

@@ -47,11 +47,12 @@ export class PropertyController {
     return this.propertyService.update(Number(id), property);
   }
 
+  //Delete a property
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<void> {
     //handle the error if region not found
-    const user = await this.propertyService.findOne(Number(id));
-    if (!user) {
+    const property = await this.propertyService.findOne(Number(id));
+    if (!property) {
       throw new Error('Region not found!!');
     }
     return this.propertyService.delete(Number(id));
