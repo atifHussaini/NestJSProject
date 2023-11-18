@@ -27,7 +27,7 @@ export class LeadController {
   }
 
   //Get all leads sorted by created_at
-  @Get('/sorted/:createdAt')
+  @Get('/sorted-createdAt')
   async findAllSortedCreatedAt() {
     return await this.leadService.findAllSortedCreatedAt();
   }
