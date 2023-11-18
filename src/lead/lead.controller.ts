@@ -36,7 +36,7 @@ export class LeadController {
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<Lead> {
     //handle the error if lead does not exist
-    const lead = await this.leadService.findOne(Number(id));
+    const lead = await this.leadService.findOne(id);
     if (!lead) {
       throw new Error('Lead not found!!');
     } else {
@@ -52,17 +52,17 @@ export class LeadController {
   //Update a lead
   @Put(':id')
   async update(@Param('id') id: string, @Body() lead: Lead): Promise<Lead> {
-    return this.leadService.update(Number(id), lead);
+    return this.leadService.update(id, lead);
   }
 
   //Delete a lead
   @Delete(':id')
   async delete(@Param('id') id: string) {
     //handle the error if the lead not found
-    const lead = await this.leadService.findOne(Number(id));
+    const lead = await this.leadService.findOne(id);
     if (!lead) {
       throw new Error('Lead not found!!');
     }
-    return this.leadService.delete(Number(id));
+    return this.leadService.delete(id);
   }
 }

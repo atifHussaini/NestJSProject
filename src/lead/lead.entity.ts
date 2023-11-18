@@ -13,7 +13,7 @@ import { Property } from '../property/property.entity';
 @Entity()
 export class Lead {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: string;
 
   @Column()
   contactInfo: string;

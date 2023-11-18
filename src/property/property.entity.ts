@@ -15,7 +15,7 @@ import { Region } from '../region/region.entity';
 @Entity()
 export class Property {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: string;
 
   @Column()
   address: string;

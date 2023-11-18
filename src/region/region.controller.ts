@@ -6,6 +6,8 @@ import {
   Param,
   Delete,
   Put,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { RegionService } from './region.service';
 import { Region } from './region.entity';
@@ -16,8 +18,16 @@ export class RegionController {
 
   //Get all regions
   @Get()
-  async findAll(): Promise<Region[]> {
-    return await this.regionService.findAll();
+  async findAll() {
+    try {
+      const regions = await this.regionService.findAll();
+      return { data: regions, message: 'Regions fetched successfully!'}
+    } catch (error) {
+      throw new HttpException(
+        { message: 'Error fetching regions', error },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   //Get one region
@@ -52,8 +62,8 @@ export class RegionController {
     //handle the error if region not found
     const region = await this.regionService.findOne(id);
     if (!region) {
-      throw new Error('Region not found!!');
+      throw new Error(`Region with id ${id} was not found!!`);
     }
-    return this.regionService.delete(Number(id));
+    return this.regionService.delete(id);
   }
 }

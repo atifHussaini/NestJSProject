@@ -12,7 +12,11 @@ export class RegionService {
 
   //Get all regions
   async findAll(): Promise<Region[]> {
-    return await this.regionRepository.find({ relations: ['properties'] });
+    return await this.regionRepository
+      .find({ relations: ['properties'] })
+      .catch((error) => {
+        throw new NotFoundException(`Failed to fetch regions! ${error}`);
+      });
   }
 
   //Get a region
@@ -39,11 +43,11 @@ export class RegionService {
   }
 
   //Delete a region
-  async delete(id: number): Promise<void> {
+  async delete(id: string): Promise<void> {
     const region = await this.regionRepository.findOne({ where: { id } });
 
     if (!region) {
-      throw new NotFoundException(`Region with id ${id} not found!`);
+      throw new NotFoundException(`Region with id ${id} was not found!`);
     }
 
     region.deleted_at = new Date();

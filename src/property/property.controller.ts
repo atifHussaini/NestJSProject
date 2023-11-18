@@ -24,7 +24,7 @@ export class PropertyController {
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<Property> {
     //handle the error if property does not exist
-    const property = await this.propertyService.findOne(Number(id));
+    const property = await this.propertyService.findOne(id);
     if (!property) {
       throw new Error('Property not found!!');
     } else {
@@ -44,17 +44,17 @@ export class PropertyController {
     @Param('id') id: string,
     @Body() property: Property,
   ): Promise<Property> {
-    return this.propertyService.update(Number(id), property);
+    return this.propertyService.update(id, property);
   }
 
   //Delete a property
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<void> {
+  async delete(@Param('id') id: string) {
     //handle the error if region not found
-    const property = await this.propertyService.findOne(Number(id));
+    const property = await this.propertyService.findOne(id);
     if (!property) {
-      throw new Error('Region not found!!');
+      throw new Error('Property was not found!!');
     }
-    return this.propertyService.delete(Number(id));
+    return this.propertyService.delete(id);
   }
 }

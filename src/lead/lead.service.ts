@@ -16,7 +16,7 @@ export class LeadService {
   }
 
   //Get one lead
-  async findOne(id: number): Promise<Lead> {
+  async findOne(id: string): Promise<Lead> {
     return await this.leadRepository.findOne({
       where: { id },
       relations: ['property'],
@@ -48,7 +48,7 @@ export class LeadService {
   }
 
   //Update a lead
-  async update(id: number, updateLead: Lead): Promise<Lead> {
+  async update(id: string, updateLead: Lead): Promise<Lead> {
     await this.leadRepository.update(id, updateLead);
     return await this.leadRepository.findOne({
       where: { id },
@@ -57,7 +57,7 @@ export class LeadService {
   }
 
   //Delete a lead
-  async delete(id: number): Promise<void> {
+  async delete(id: string): Promise<void> {
     const lead = await this.leadRepository.findOne({ where: { id } });
 
     if (!lead) {
