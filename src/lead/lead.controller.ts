@@ -21,9 +21,9 @@ export class LeadController {
   }
 
   //Get all leads sorted by leadScore
-  @Get('/sorted/leadScore')
-  async findAllSortedLeadScore(@Param('leadScore') leadScore: number) {
-    return await this.leadService.findAllSortedLeadScore(leadScore);
+  @Get('/sorted-leadScore')
+  async findAllSortedLeadScore() {
+    return await this.leadService.findAllSortedLeadScore();
   }
 
   //Get all leads sorted by created_at

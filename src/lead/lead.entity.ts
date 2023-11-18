@@ -22,7 +22,7 @@ export class Lead {
   @JoinColumn({ name: 'propertyId' })
   property: Property;
 
-  @Column()
+  @Column({ type: 'number' })
   leadScore: number;
 
   @CreateDateColumn()

@@ -24,10 +24,10 @@ export class LeadService {
   }
 
   //Get all sorted by lead score
-  async findAllSortedLeadScore(leadScore: number): Promise<Lead[]> {
+  async findAllSortedLeadScore(): Promise<Lead[]> {
     return await this.leadRepository.find({
       order: {
-        [leadScore]: 'ASC',
+        leadScore: 'ASC',
       },
     });
   }
