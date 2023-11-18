@@ -24,7 +24,7 @@ export class RegionController {
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<Region> {
     //handle the error if region does not exist
-    const region = await this.regionService.findOne(Number(id));
+    const region = await this.regionService.findOne(id);
     if (!region) {
       throw new Error('Region not found!!');
     } else {
@@ -44,14 +44,14 @@ export class RegionController {
     @Param('id') id: string,
     @Body() region: Region,
   ): Promise<Region> {
-    return this.regionService.update(Number(id), region);
+    return this.regionService.update(id, region);
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<void> {
+  async delete(@Param('id') id: string) {
     //handle the error if region not found
-    const user = await this.regionService.findOne(Number(id));
-    if (!user) {
+    const region = await this.regionService.findOne(id);
+    if (!region) {
       throw new Error('Region not found!!');
     }
     return this.regionService.delete(Number(id));

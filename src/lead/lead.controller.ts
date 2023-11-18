@@ -57,7 +57,7 @@ export class LeadController {
 
   //Delete a lead
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<void> {
+  async delete(@Param('id') id: string) {
     //handle the error if the lead not found
     const lead = await this.leadService.findOne(Number(id));
     if (!lead) {

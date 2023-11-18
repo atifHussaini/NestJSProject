@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Region } from './region.entity';
@@ -16,7 +16,7 @@ export class RegionService {
   }
 
   //Get a region
-  async findOne(id: number): Promise<Region> {
+  async findOne(id: string): Promise<Region> {
     return await this.regionRepository.findOne({
       where: { id },
       relations: ['properties'],
@@ -30,7 +30,7 @@ export class RegionService {
   }
 
   //Update a region
-  async update(id: number, updateRegion: Region): Promise<Region> {
+  async update(id: string, updateRegion: Region): Promise<Region> {
     await this.regionRepository.update(id, updateRegion);
     return await this.regionRepository.findOne({
       where: { id },
@@ -40,6 +40,13 @@ export class RegionService {
 
   //Delete a region
   async delete(id: number): Promise<void> {
-    await this.regionRepository.delete(id);
+    const region = await this.regionRepository.findOne({ where: { id } });
+
+    if (!region) {
+      throw new NotFoundException(`Region with id ${id} not found!`);
+    }
+
+    region.deleted_at = new Date();
+    await this.regionRepository.save(region);
   }
 }

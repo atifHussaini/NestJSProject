@@ -12,7 +12,7 @@ import { Property } from '../property/property.entity';
 @Entity()
 export class Region {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: string;
 
   @Column()
   name: string;

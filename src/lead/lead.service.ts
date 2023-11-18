@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Lead } from './lead.entity';
@@ -58,6 +58,13 @@ export class LeadService {
 
   //Delete a lead
   async delete(id: number): Promise<void> {
-    await this.leadRepository.delete(id);
+    const lead = await this.leadRepository.findOne({ where: { id } });
+
+    if (!lead) {
+      throw new NotFoundException(`Lead with id ${id} not found!`);
+    }
+
+    lead.deleted_at = new Date();
+    await this.leadRepository.save(lead);
   }
 }
