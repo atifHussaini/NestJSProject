@@ -21,7 +21,7 @@ import { LeadModule } from './lead/lead.module';
       password: 'null',
       database: 'crazy1ndn',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true,
+      synchronize: false,
     }),
     PropertyModule,
     LeadModule,
