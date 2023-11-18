@@ -21,8 +21,10 @@ export class RegionController {
   async findAll() {
     try {
       const regions = await this.regionService.findAll();
-      return { data: regions, message: 'Regions fetched successfully!'}
+      return { data: regions, message: 'Regions fetched successfully'};
     } catch (error) {
+      console.error('Error in RegionController findAll', error);
+
       throw new HttpException(
         { message: 'Error fetching regions', error },
         HttpStatus.INTERNAL_SERVER_ERROR,
