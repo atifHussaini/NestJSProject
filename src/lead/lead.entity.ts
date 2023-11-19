@@ -18,7 +18,7 @@ export class Lead {
   @Column()
   contactInfo: string;
 
-  @Column()
+  @Column({ name: 'propertyId' })
   propertyId: string;
 
   @OneToOne(() => Property, (property) => property.lead)

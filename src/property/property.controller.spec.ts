@@ -6,6 +6,9 @@ describe('PropertyController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        
+      ],
       controllers: [PropertyController],
     }).compile();
 

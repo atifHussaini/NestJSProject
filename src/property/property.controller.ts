@@ -5,12 +5,17 @@ import {
   Body,
   Param,
   Delete,
-  Put,
+  Patch,
   InternalServerErrorException,
 } from '@nestjs/common';
 import { PropertyService } from './property.service';
 import { Property } from './property.entity';
-import { EntityNotFoundError } from 'typeorm';
+
+export interface PropertyUpdatePayload {
+  address?: string;
+  data?: Record<any, any>;
+  regionId?: string;
+}
 
 @Controller('property')
 export class PropertyController {
@@ -27,22 +32,9 @@ export class PropertyController {
   async findOne(@Param('id') id: string): Promise<Property> {
     try {
       //handle the error if property does not exist
-      const property = await this.propertyService.findOne(id);
-      if (!property) {
-        throw new Error('Property not found!!');
-      }
-      //Return data if found
-      return property;
+      return await this.propertyService.findOne(id);
     } catch (error) {
-      console.error(`Error: ${error.message}`);
-
-      //Handle specific database errors and return appropriate status codes
-      if (error instanceof EntityNotFoundError) {
-        throw new InternalServerErrorException('Database error occurred');
-      }
-
-      // For unhandled errors, return a generic 500 Internal Server Error
-      throw new InternalServerErrorException('Internal server error');
+      throw new InternalServerErrorException(error);
     }
   }
 
@@ -53,12 +45,12 @@ export class PropertyController {
   }
 
   //Update a property
-  @Put(':id')
+  @Patch(':id')
   async update(
     @Param('id') id: string,
-    @Body() property: Property,
+    @Body() body: PropertyUpdatePayload,
   ): Promise<Property> {
-    return this.propertyService.update(id, property);
+    return this.propertyService.update(id, body);
   }
 
   //Delete a property
@@ -72,3 +64,4 @@ export class PropertyController {
     return this.propertyService.delete(id);
   }
 }
+
