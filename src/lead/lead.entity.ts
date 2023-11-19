@@ -18,6 +18,9 @@ export class Lead {
   @Column()
   contactInfo: string;
 
+  @Column()
+  propertyId: string;
+
   @OneToOne(() => Property, (property) => property.lead)
   @JoinColumn({ name: 'propertyId' })
   property: Property;

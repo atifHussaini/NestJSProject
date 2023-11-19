@@ -15,7 +15,7 @@ export class LeadService {
     return await this.leadRepository.find({ relations: ['property'] });
   }
 
-  //Get one lead
+  //Get a lead
   async findOne(id: string): Promise<Lead> {
     return await this.leadRepository.findOne({
       where: { id },

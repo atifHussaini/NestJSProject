@@ -32,6 +32,9 @@ export class Property {
   @DeleteDateColumn()
   deleted_at: Date;
 
+  @Column({ name: 'regionId' })
+  regionId: string;
+
   @ManyToOne(() => Region, (region) => region.properties)
   @JoinColumn({ name: 'regionId' })
   region: Region;

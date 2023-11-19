@@ -44,6 +44,7 @@ export class LeadController {
         throw new Error('Lead not found!!');
       }
 
+      //Return data if found
       return lead;
     } catch (error) {
       console.error(`Error: ${error.message}`);
