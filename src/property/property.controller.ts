@@ -6,9 +6,11 @@ import {
   Param,
   Delete,
   Put,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { PropertyService } from './property.service';
 import { Property } from './property.entity';
+import { EntityNotFoundError } from 'typeorm';
 
 @Controller('property')
 export class PropertyController {
@@ -23,12 +25,24 @@ export class PropertyController {
   //Get a property
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<Property> {
-    //handle the error if property does not exist
-    const property = await this.propertyService.findOne(id);
-    if (!property) {
-      throw new Error('Property not found!!');
-    } else {
+    try {
+      //handle the error if property does not exist
+      const property = await this.propertyService.findOne(id);
+      if (!property) {
+        throw new Error('Property not found!!');
+      }
+      //Return data if found
       return property;
+    } catch (error) {
+      console.error(`Error: ${error.message}`);
+
+      //Handle specific database errors and return appropriate status codes
+      if (error instanceof EntityNotFoundError) {
+        throw new InternalServerErrorException('Database error occurred');
+      }
+
+      // For unhandled errors, return a generic 500 Internal Server Error
+      throw new InternalServerErrorException('Internal server error');
     }
   }
 

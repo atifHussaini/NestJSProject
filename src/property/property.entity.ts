@@ -1,4 +1,3 @@
-import { Lead } from 'src/lead/lead.entity';
 import {
   Entity,
   Column,
@@ -11,6 +10,7 @@ import {
   OneToOne,
 } from 'typeorm';
 import { Region } from '../region/region.entity';
+import { Lead } from '../lead/lead.entity';
 
 @Entity()
 export class Property {

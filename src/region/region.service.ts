@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Region } from './region.entity';
@@ -12,13 +12,7 @@ export class RegionService {
 
   //Get all regions
   async findAll(): Promise<Region[]> {
-    try {
-      return await this.regionRepository.find({ relations: ['properties'] });
-    } catch (error) {
-      console.error('Error in RegionService findAll:', error);
-
-      throw new InternalServerErrorException('Failed to fetch regions');
-    }
+    return await this.regionRepository.find({ relations: ['properties'] });
   }
 
   //Get a region

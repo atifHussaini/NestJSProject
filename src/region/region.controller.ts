@@ -6,11 +6,11 @@ import {
   Param,
   Delete,
   Put,
-  HttpException,
-  HttpStatus,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { RegionService } from './region.service';
 import { Region } from './region.entity';
+import { EntityNotFoundError } from 'typeorm';
 
 @Controller('region')
 export class RegionController {
@@ -18,29 +18,31 @@ export class RegionController {
 
   //Get all regions
   @Get()
-  async findAll() {
-    try {
-      const regions = await this.regionService.findAll();
-      return { data: regions, message: 'Regions fetched successfully'};
-    } catch (error) {
-      console.error('Error in RegionController findAll', error);
-
-      throw new HttpException(
-        { message: 'Error fetching regions', error },
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+  async findAll(): Promise<Region[]> {
+    return await this.regionService.findAll();
   }
 
   //Get one region
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<Region> {
-    //handle the error if region does not exist
-    const region = await this.regionService.findOne(id);
-    if (!region) {
-      throw new Error('Region not found!!');
-    } else {
+    try {
+      //handle the error if region does not exist
+      const region = await this.regionService.findOne(id);
+      if (!region) {
+        throw new Error('Region not found!!');
+      }
+      //Return data if found
       return region;
+    } catch (error) {
+      console.error(`Error: ${error.message}`);
+
+      //Handle specific database errors and return appropriate status codes
+      if (error instanceof EntityNotFoundError) {
+        throw new InternalServerErrorException('Database error occurred');
+      }
+
+      // For unhandled errors, return a generic 500 Internal Server Error
+      throw new InternalServerErrorException('Internal server error');
     }
   }
 
