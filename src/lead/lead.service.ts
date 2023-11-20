@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { LeadCreatePayload, LeadUpdatePayload } from './lead.dto';
 import { Lead } from './lead.entity';
 
 @Injectable()
@@ -42,13 +43,13 @@ export class LeadService {
   }
 
   //Create a lead
-  async create(lead: Lead): Promise<Lead> {
+  async create(lead: LeadCreatePayload): Promise<Lead> {
     const newLead = this.leadRepository.create(lead);
     return await this.leadRepository.save(newLead);
   }
 
   //Update a lead
-  async update(id: string, updateLead: Lead): Promise<Lead> {
+  async update(id: string, updateLead: LeadUpdatePayload): Promise<Lead> {
     await this.leadRepository.update(id, updateLead);
     return await this.leadRepository.findOne({
       where: { id },

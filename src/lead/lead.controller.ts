@@ -5,12 +5,13 @@ import {
   Body,
   Param,
   Delete,
-  Put,
   InternalServerErrorException,
+  Patch,
 } from '@nestjs/common';
 import { LeadService } from './lead.service';
 import { Lead } from './lead.entity';
 import { EntityNotFoundError } from 'typeorm';
+import { LeadCreatePayload, LeadUpdatePayload } from './lead.dto';
 
 @Controller('lead')
 export class LeadController {
@@ -59,14 +60,18 @@ export class LeadController {
     }
   }
 
+  //Create a lead
   @Post()
-  async create(@Body() lead: Lead): Promise<Lead> {
-    return await this.leadService.create(lead);
+  async create(@Body() body: LeadCreatePayload): Promise<Lead> {
+    return await this.leadService.create(body);
   }
 
   //Update a lead
-  @Put(':id')
-  async update(@Param('id') id: string, @Body() lead: Lead): Promise<Lead> {
+  @Patch(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() lead: LeadUpdatePayload,
+  ): Promise<Lead> {
     return this.leadService.update(id, lead);
   }
 
