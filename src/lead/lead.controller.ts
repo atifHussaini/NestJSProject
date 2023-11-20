@@ -11,7 +11,7 @@ import {
 import { LeadService } from './lead.service';
 import { Lead } from './lead.entity';
 import { EntityNotFoundError } from 'typeorm';
-import { LeadCreatePayload, LeadUpdatePayload } from './lead.dto';
+import { UpdateLeadDTO, CreateLeadDTO } from './lead.dto';
 
 @Controller('lead')
 export class LeadController {
@@ -62,17 +62,14 @@ export class LeadController {
 
   //Create a lead
   @Post()
-  async create(@Body() body: LeadCreatePayload): Promise<Lead> {
+  async create(@Body() body: CreateLeadDTO): Promise<Lead> {
     return await this.leadService.create(body);
   }
 
   //Update a lead
-  @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() lead: LeadUpdatePayload,
-  ): Promise<Lead> {
-    return this.leadService.update(id, lead);
+  @Patch()
+  async update(@Body() lead: UpdateLeadDTO): Promise<Lead> {
+    return this.leadService.update(lead);
   }
 
   //Delete a lead
