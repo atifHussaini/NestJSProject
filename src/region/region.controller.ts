@@ -11,7 +11,7 @@ import {
 import { RegionService } from './region.service';
 import { Region } from './region.entity';
 import { EntityNotFoundError } from 'typeorm';
-import { RegionCreatePayload, RegionUpdatePayload } from './region.dto';
+import { UpdateRegionDTO, CreateRegionDTO } from './region.dto';
 
 @Controller('region')
 export class RegionController {
@@ -49,17 +49,14 @@ export class RegionController {
 
   //Create region
   @Post()
-  async create(@Body() body: RegionCreatePayload): Promise<Region> {
+  async create(@Body() body: CreateRegionDTO): Promise<Region> {
     return await this.regionService.create(body);
   }
 
   //Update region
-  @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() body: RegionUpdatePayload,
-  ): Promise<Region> {
-    return this.regionService.update(id, body);
+  @Patch()
+  async update(@Body() body: UpdateRegionDTO): Promise<Region> {
+    return this.regionService.update(body);
   }
 
   @Delete(':id')
