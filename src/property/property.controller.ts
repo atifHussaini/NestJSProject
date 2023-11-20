@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { PropertyService } from './property.service';
 import { Property } from './property.entity';
-import { PropertyCreatePayLoad, PropertyUpdatePayload } from './property.dto';
+import { CreatePropertyDTO, UpdatePropertyDTO } from './property.dto';
 
 @Controller('property')
 export class PropertyController {
@@ -35,17 +35,14 @@ export class PropertyController {
 
   //Create a property
   @Post()
-  async create(@Body() body: PropertyCreatePayLoad): Promise<Property> {
+  async create(@Body() body: CreatePropertyDTO): Promise<Property> {
     return await this.propertyService.create(body);
   }
 
   //Update a property
-  @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() body: PropertyUpdatePayload,
-  ): Promise<Property> {
-    return this.propertyService.update(id, body);
+  @Patch()
+  async update(@Body() body: UpdatePropertyDTO): Promise<Property> {
+    return this.propertyService.update(body);
   }
 
   //Delete a property
