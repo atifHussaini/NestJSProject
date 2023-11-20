@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { RegionCreatePayload, RegionUpdatePayload } from './region.dto';
 import { Region } from './region.entity';
 
 @Injectable()
@@ -24,13 +25,13 @@ export class RegionService {
   }
 
   //Create a region
-  async create(region: Region): Promise<Region> {
+  async create(region: RegionCreatePayload): Promise<Region> {
     const newRegion = this.regionRepository.create(region);
     return await this.regionRepository.save(newRegion);
   }
 
   //Update a region
-  async update(id: string, updateRegion: Region): Promise<Region> {
+  async update(id: string, updateRegion: RegionUpdatePayload): Promise<Region> {
     await this.regionRepository.update(id, updateRegion);
     return await this.regionRepository.findOne({
       where: { id },

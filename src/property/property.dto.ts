@@ -6,6 +6,6 @@ export interface PropertyUpdatePayload {
 
 export interface PropertyCreatePayLoad {
   address: string;
-  regionId: string;
   data: Record<any, any>;
+  regionId: string;
 }

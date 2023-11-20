@@ -5,12 +5,13 @@ import {
   Body,
   Param,
   Delete,
-  Put,
   InternalServerErrorException,
+  Patch,
 } from '@nestjs/common';
 import { RegionService } from './region.service';
 import { Region } from './region.entity';
 import { EntityNotFoundError } from 'typeorm';
+import { RegionCreatePayload, RegionUpdatePayload } from './region.dto';
 
 @Controller('region')
 export class RegionController {
@@ -48,17 +49,17 @@ export class RegionController {
 
   //Create region
   @Post()
-  async create(@Body() region: Region): Promise<Region> {
-    return await this.regionService.create(region);
+  async create(@Body() body: RegionCreatePayload): Promise<Region> {
+    return await this.regionService.create(body);
   }
 
   //Update region
-  @Put(':id')
+  @Patch(':id')
   async update(
     @Param('id') id: string,
-    @Body() region: Region,
+    @Body() body: RegionUpdatePayload,
   ): Promise<Region> {
-    return this.regionService.update(id, region);
+    return this.regionService.update(id, body);
   }
 
   @Delete(':id')

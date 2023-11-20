@@ -25,8 +25,8 @@ export class PropertyService {
   }
 
   //Create a property
-  async create(body: PropertyCreatePayLoad): Promise<Property> {
-    const newProperty = this.propertyRepository.create(body);
+  async create(property: PropertyCreatePayLoad): Promise<Property> {
+    const newProperty = this.propertyRepository.create(property);
     return await this.propertyRepository.save(newProperty);
   }
 
