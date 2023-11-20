@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { PropertyUpdatePayload } from './property.controller';
+import { PropertyCreatePayLoad, PropertyUpdatePayload } from './property.dto';
 import { Property } from './property.entity';
 
 @Injectable()
@@ -25,8 +25,8 @@ export class PropertyService {
   }
 
   //Create a property
-  async create(property: Property): Promise<Property> {
-    const newProperty = this.propertyRepository.create(property);
+  async create(body: PropertyCreatePayLoad): Promise<Property> {
+    const newProperty = this.propertyRepository.create(body);
     return await this.propertyRepository.save(newProperty);
   }
 
