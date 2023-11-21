@@ -12,8 +12,6 @@ import { LeadModule } from './lead/lead.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
-    RegionModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
@@ -23,6 +21,8 @@ import { LeadModule } from './lead/lead.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: false,
     }),
+    RegionModule,
+    ConfigModule.forRoot(),
     PropertyModule,
     LeadModule,
     TypeOrmModule.forFeature([Region, Property, Lead]),
@@ -31,3 +31,4 @@ import { LeadModule } from './lead/lead.module';
   providers: [AppService],
 })
 export class AppModule {}
+
