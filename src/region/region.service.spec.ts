@@ -32,7 +32,7 @@ describe('RegionService', () => {
     region.id = '6';
     jest.spyOn(repository, 'findOne').mockResolvedValueOnce(region);
 
-    const result = await service.findOne('6');
+    const result = await service.findOne('5');
 
     expect(result).toEqual(region);
   });

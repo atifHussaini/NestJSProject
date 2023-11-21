@@ -10,7 +10,13 @@ import {
 } from '@nestjs/common';
 import { PropertyService } from './property.service';
 import { Property } from './property.entity';
-import { CreatePropertyDTO, UpdatePropertyDTO } from './property.dto';
+import {
+  CreatePropertyDTO,
+  UpdatePropertyDTO,
+  CreatePropertyDTOSchema,
+  UpdatePropertyDTOSchema,
+} from './property.dto';
+import { validate } from 'src/utils';
 
 @Controller('property')
 export class PropertyController {
@@ -36,12 +42,14 @@ export class PropertyController {
   //Create a property
   @Post()
   async create(@Body() body: CreatePropertyDTO): Promise<Property> {
+    validate(body, CreatePropertyDTOSchema);
     return await this.propertyService.create(body);
   }
 
   //Update a property
   @Patch()
   async update(@Body() body: UpdatePropertyDTO): Promise<Property> {
+    validate(body, UpdatePropertyDTOSchema);
     return this.propertyService.update(body);
   }
 

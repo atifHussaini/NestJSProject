@@ -11,7 +11,13 @@ import {
 import { RegionService } from './region.service';
 import { Region } from './region.entity';
 import { EntityNotFoundError } from 'typeorm';
-import { UpdateRegionDTO, CreateRegionDTO } from './region.dto';
+import {
+  UpdateRegionDTO,
+  CreateRegionDTO,
+  CreateRegionDTOSchema,
+  UpdateRegionDTOSchema,
+} from './region.dto';
+import { validate } from '../utils';
 
 @Controller('region')
 export class RegionController {
@@ -50,12 +56,14 @@ export class RegionController {
   //Create region
   @Post()
   async create(@Body() body: CreateRegionDTO): Promise<Region> {
+    validate(body, CreateRegionDTOSchema);
     return await this.regionService.create(body);
   }
 
   //Update region
   @Patch()
   async update(@Body() body: UpdateRegionDTO): Promise<Region> {
+    validate(body, UpdateRegionDTOSchema);
     return this.regionService.update(body);
   }
 
