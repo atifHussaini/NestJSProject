@@ -7,6 +7,7 @@ import {
   Delete,
   InternalServerErrorException,
   Patch,
+  NotFoundException,
 } from '@nestjs/common';
 import { RegionService } from './region.service';
 import { Region } from './region.entity';
@@ -64,7 +65,16 @@ export class RegionController {
   @Patch()
   async update(@Body() body: UpdateRegionDTO): Promise<Region> {
     validate(body, UpdateRegionDTOSchema);
-    return this.regionService.update(body);
+
+    //handle the erro if the region is not found
+    const region = await this.regionService.update(body);
+    if (!region) {
+      throw new NotFoundException(
+        `Region with id ${UpdateRegionDTOSchema.id} was not found. Therefore, unable to make update!`,
+      );
+    }
+
+    return region;
   }
 
   @Delete(':id')
@@ -72,7 +82,7 @@ export class RegionController {
     //handle the error if region not found
     const region = await this.regionService.findOne(id);
     if (!region) {
-      throw new Error(`Region with id ${id} was not found!!`);
+      throw new NotFoundException(`Region with id ${id} was not found!!`);
     }
     return this.regionService.delete(id);
   }

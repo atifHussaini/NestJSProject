@@ -7,6 +7,7 @@ import {
   Delete,
   Patch,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { PropertyService } from './property.service';
 import { Property } from './property.entity';
@@ -59,7 +60,7 @@ export class PropertyController {
     //handle the error if region not found
     const property = await this.propertyService.findOne(id);
     if (!property) {
-      throw new Error('Property was not found!!');
+      throw new NotFoundException(`Property with id ${id} was not found!`);
     }
     return this.propertyService.delete(id);
   }
