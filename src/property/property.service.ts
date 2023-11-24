@@ -75,7 +75,6 @@ export class PropertyService {
     if (!property) {
       throw new NotFoundException(`Property with id ${id} was not found!`);
     }
-
     property.deleted_at = new Date();
     return await this.propertyRepository.save(property);
   }

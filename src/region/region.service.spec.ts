@@ -108,7 +108,7 @@ describe('RegionService', () => {
     const findOneSpy = jest
       .spyOn(repository, 'findOne')
       .mockResolvedValueOnce(undefined);
-    await expect(service.update(updateRegion)).rejects.toThrowError(
+    await expect(service.update(updateRegion)).rejects.toThrow(
       NotFoundException,
     );
     expect(findOneSpy).toHaveBeenCalled();

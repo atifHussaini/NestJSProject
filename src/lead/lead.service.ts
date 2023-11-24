@@ -87,12 +87,12 @@ export class LeadService {
   }
 
   //Delete a lead
-  async delete(id: string): Promise<void> {
+  async delete(id: string): Promise<Lead> {
     const lead = await this.leadRepository.findOne({ where: { id } });
     if (!lead) {
       throw new NotFoundException(`Lead with id ${id} not found!`);
     }
     lead.deleted_at = new Date();
-    await this.leadRepository.save(lead);
+    return await this.leadRepository.save(lead);
   }
 }
