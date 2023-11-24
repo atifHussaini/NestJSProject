@@ -41,25 +41,33 @@ export class PropertyService {
 
   //Update a property
   async update(updateProperty: UpdatePropertyDTO): Promise<Property> {
-    const property = await this.propertyRepository.update(
-      updateProperty.id,
-      updateProperty,
-    );
+    const property = await this.propertyRepository.findOne({
+      where: { id: updateProperty.id },
+    });
+
     if (!property) {
       throw new NotFoundException(
-        `Property with id ${updateProperty.id} was not found. Therefore, unable to make update!`,
+        `Property with id ${updateProperty.id} was not found!`,
       );
     }
-    return await this.propertyRepository.findOne({
-      where: { id: updateProperty.id },
-      relations: ['region'],
-    });
+
+    try {
+      await this.propertyRepository.update(
+        { id: updateProperty.id, deleted_at: null },
+        updateProperty,
+      );
+      return await this.propertyRepository.findOne({
+        where: { id: updateProperty.id },
+        relations: ['region'],
+      });
+    } catch (e) {
+      throw new BadRequestException((e as Error).message);
+    }
   }
 
   //Delete a property
   async delete(id: string): Promise<void> {
     const property = await this.propertyRepository.findOne({ where: { id } });
-
     if (!property) {
       throw new NotFoundException(`Property with id ${id} was not found!`);
     }
