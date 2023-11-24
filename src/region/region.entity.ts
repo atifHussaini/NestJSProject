@@ -26,7 +26,7 @@ export class Region {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @DeleteDateColumn()
+  @DeleteDateColumn({ nullable: true })
   deleted_at: Date;
 
   @OneToMany(() => Property, (property) => property.region)

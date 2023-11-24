@@ -17,9 +17,11 @@ import {
   CreatePropertyDTOSchema,
   UpdatePropertyDTOSchema,
 } from './property.dto';
-import { validate } from 'src/utils';
+import { validate } from '../utils';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 
 @Controller('property')
+@ApiTags('Property')
 export class PropertyController {
   constructor(private readonly propertyService: PropertyService) {}
 
@@ -42,6 +44,9 @@ export class PropertyController {
 
   //Create a property
   @Post()
+  @ApiBody({
+    schema: CreatePropertyDTOSchema,
+  })
   async create(@Body() body: CreatePropertyDTO): Promise<Property> {
     validate(body, CreatePropertyDTOSchema);
     return await this.propertyService.create(body);
@@ -49,9 +54,20 @@ export class PropertyController {
 
   //Update a property
   @Patch()
+  @ApiBody({
+    schema: UpdatePropertyDTOSchema,
+  })
   async update(@Body() body: UpdatePropertyDTO): Promise<Property> {
     validate(body, UpdatePropertyDTOSchema);
-    return this.propertyService.update(body);
+
+    //handle the error if the property is not found
+    const property = await this.propertyService.update(body);
+    if (!property) {
+      throw new NotFoundException(
+        `Property with id ${body.id} was not found. Therefore, unable to make update!`,
+      );
+    }
+    return await this.propertyService.update(body);
   }
 
   //Delete a property

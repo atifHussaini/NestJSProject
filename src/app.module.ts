@@ -15,9 +15,9 @@ import { LeadModule } from './lead/lead.module';
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
-      username: 'crazy1ndn',
-      password: 'null',
-      database: 'crazy1ndn',
+      username: process.env.DB_USERNAME ?? 'crazy1ndn',
+      password: process.env.DB_PASSWORD ?? 'null',
+      database: process.env.DB_NAME ?? 'crazy1ndn',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: false,
     }),
@@ -31,4 +31,3 @@ import { LeadModule } from './lead/lead.module';
   providers: [AppService],
 })
 export class AppModule {}
-

@@ -12,9 +12,9 @@ export const CreatePropertyDTOSchema = Type.Object({
 });
 
 export const UpdatePropertyDTOSchema = Type.Object({
-  address: PropertyAddress,
-  regionId: PropertyRegionId,
-  data: PropertyData,
+  address: Type.Optional(PropertyAddress),
+  regionId: Type.Optional(PropertyRegionId),
+  data: Type.Optional(PropertyData),
   id: PropertyId,
 });
 

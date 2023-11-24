@@ -10,8 +10,8 @@ export const CreateRegionDTOSchema = Type.Object({
 });
 
 export const UpdateRegionDTOSchema = Type.Object({
-  name: RegionName,
-  description: RegionDescription,
+  name: Type.Optional(RegionName),
+  description: Type.Optional(RegionDescription),
   id: RegionId,
 });
 

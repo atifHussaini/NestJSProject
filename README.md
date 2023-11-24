@@ -34,6 +34,14 @@ $ npm install
 
 ## Running the app
 
+Prior to running the application, set your environment variables to connect to the DB. It defaults to my local database with user and password.
+
+```bash
+$ export DB_USERNAME=enter_username_here
+$ export DB_PASSWORD=enter_password_here
+$ export DB_NAME=enter_database_name_here
+```
+
 ```bash
 # development
 $ npm run start
@@ -44,6 +52,8 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
+
+You can access the swagger docs after running the app at `http://localhost:3000/api`
 
 ## Test
 

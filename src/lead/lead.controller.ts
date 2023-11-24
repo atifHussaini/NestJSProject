@@ -17,9 +17,11 @@ import {
   CreateLeadDTOSchema,
   UpdateLeadDTOSchema,
 } from './lead.dto';
-import { validate } from 'src/utils';
+import { validate } from '../utils';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 
 @Controller('lead')
+@ApiTags('Lead')
 export class LeadController {
   constructor(private readonly leadService: LeadService) {}
 
@@ -68,6 +70,15 @@ export class LeadController {
 
   //Create a lead
   @Post()
+  @ApiBody({
+    schema: {
+      properties: {
+        contactInfo: { type: 'string' },
+        propertyId: { type: 'string' },
+        leadScore: { type: 'number' },
+      },
+    },
+  })
   async create(@Body() body: CreateLeadDTO): Promise<Lead> {
     validate(body, CreateLeadDTOSchema);
     return await this.leadService.create(body);
@@ -75,6 +86,16 @@ export class LeadController {
 
   //Update a lead
   @Patch()
+  @ApiBody({
+    schema: {
+      properties: {
+        contactInfo: { type: 'string' },
+        propertyId: { type: 'string' },
+        leadScore: { type: 'number' },
+        id: { type: 'string' },
+      },
+    },
+  })
   async update(@Body() body: UpdateLeadDTO): Promise<Lead> {
     validate(body, UpdateLeadDTOSchema);
     return this.leadService.update(body);

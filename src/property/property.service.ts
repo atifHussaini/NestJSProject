@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreatePropertyDTO, UpdatePropertyDTO } from './property.dto';
@@ -18,21 +18,38 @@ export class PropertyService {
 
   //Get a property
   async findOne(id: string): Promise<Property> {
-    return await this.propertyRepository.findOne({
+    const property = await this.propertyRepository.findOne({
       where: { id },
       relations: ['region'],
     });
+
+    if (!property) {
+      throw new NotFoundException(`Property with id ${id} was not found!`);
+    }
+    return property;
   }
 
   //Create a property
-  async create(property: CreatePropertyDTO): Promise<Property> {
-    const newProperty = this.propertyRepository.create(property);
-    return await this.propertyRepository.save(newProperty);
+  async create(createPropertyBody: CreatePropertyDTO): Promise<Property> {
+    try {
+      const newProperty = this.propertyRepository.create(createPropertyBody);
+      return await this.propertyRepository.save(newProperty);
+    } catch (e) {
+      throw new BadRequestException((e as Error).message);
+    }
   }
 
   //Update a property
   async update(updateProperty: UpdatePropertyDTO): Promise<Property> {
-    await this.propertyRepository.update(updateProperty.id, updateProperty);
+    const property = await this.propertyRepository.update(
+      updateProperty.id,
+      updateProperty,
+    );
+    if (!property) {
+      throw new NotFoundException(
+        `Property with id ${updateProperty.id} was not found. Therefore, unable to make update!`,
+      );
+    }
     return await this.propertyRepository.findOne({
       where: { id: updateProperty.id },
       relations: ['region'],
