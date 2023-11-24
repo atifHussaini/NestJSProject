@@ -5,12 +5,10 @@ import {
   Body,
   Param,
   Delete,
-  InternalServerErrorException,
   Patch,
 } from '@nestjs/common';
 import { LeadService } from './lead.service';
 import { Lead } from './lead.entity';
-import { EntityNotFoundError } from 'typeorm';
 import {
   UpdateLeadDTO,
   CreateLeadDTO,
@@ -46,26 +44,7 @@ export class LeadController {
   //Get a lead
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<Lead> {
-    try {
-      //handle the error if lead does not exist
-      const lead = await this.leadService.findOne(id);
-      if (!lead) {
-        throw new Error('Lead not found!!');
-      }
-
-      //Return data if found
-      return lead;
-    } catch (error) {
-      console.error(`Error: ${error.message}`);
-
-      //Handle specific database errors and return appropriate status codes
-      if (error instanceof EntityNotFoundError) {
-        throw new InternalServerErrorException('Database error occurred');
-      }
-
-      // For unhandled errors, return a generic 500 Internal Server Error
-      throw new InternalServerErrorException('Internal server error');
-    }
+    return await this.leadService.findOne(id);
   }
 
   //Create a lead

@@ -1,6 +1,6 @@
 import { Type, Static } from '@sinclair/typebox';
 
-const PropertyId = Type.String({ minimum: 1 });
+const PropertyId = Type.String({ minLength: 1 });
 const PropertyAddress = Type.String({ minLength: 1, maxLength: 255 });
 const PropertyRegionId = Type.String({ minLength: 1 });
 const PropertyData = Type.Any();

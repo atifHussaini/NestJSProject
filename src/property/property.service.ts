@@ -1,6 +1,10 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { CreatePropertyDTO, UpdatePropertyDTO } from './property.dto';
 import { Property } from './property.entity';
 
@@ -53,7 +57,7 @@ export class PropertyService {
 
     try {
       await this.propertyRepository.update(
-        { id: updateProperty.id, deleted_at: null },
+        { id: updateProperty.id, deleted_at: IsNull() },
         updateProperty,
       );
       return await this.propertyRepository.findOne({
@@ -66,13 +70,13 @@ export class PropertyService {
   }
 
   //Delete a property
-  async delete(id: string): Promise<void> {
+  async delete(id: string): Promise<Property> {
     const property = await this.propertyRepository.findOne({ where: { id } });
     if (!property) {
       throw new NotFoundException(`Property with id ${id} was not found!`);
     }
 
     property.deleted_at = new Date();
-    await this.propertyRepository.save(property);
+    return await this.propertyRepository.save(property);
   }
 }

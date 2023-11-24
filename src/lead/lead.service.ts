@@ -1,6 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { UpdateLeadDTO, CreateLeadDTO } from './lead.dto';
 import { Lead } from './lead.entity';
 
@@ -18,10 +22,15 @@ export class LeadService {
 
   //Get a lead
   async findOne(id: string): Promise<Lead> {
-    return await this.leadRepository.findOne({
+    const lead = await this.leadRepository.findOne({
       where: { id },
       relations: ['property'],
     });
+
+    if (!lead) {
+      throw new NotFoundException(`Lead with id ${id} was not found!`);
+    }
+    return lead;
   }
 
   //Get all sorted by lead score
@@ -44,27 +53,45 @@ export class LeadService {
 
   //Create a lead
   async create(lead: CreateLeadDTO): Promise<Lead> {
-    const newLead = this.leadRepository.create(lead);
-    return await this.leadRepository.save(newLead);
+    try {
+      const newLead = this.leadRepository.create(lead);
+      return await this.leadRepository.save(newLead);
+    } catch (e) {
+      throw new BadRequestException((e as Error).message);
+    }
   }
 
   //Update a lead
   async update(updateLead: UpdateLeadDTO): Promise<Lead> {
-    await this.leadRepository.update(updateLead.id, updateLead);
-    return await this.leadRepository.findOne({
+    const lead = await this.leadRepository.findOne({
       where: { id: updateLead.id },
-      relations: ['property'],
     });
+    if (!lead) {
+      throw new NotFoundException(
+        `Region with id ${updateLead.id} was not found!`,
+      );
+    }
+
+    try {
+      await this.leadRepository.update(
+        { id: updateLead.id, deleted_at: IsNull() },
+        updateLead,
+      );
+      return await this.leadRepository.findOne({
+        where: { id: updateLead.id },
+        relations: ['property'],
+      });
+    } catch (e) {
+      throw new BadRequestException((e as Error).message);
+    }
   }
 
   //Delete a lead
   async delete(id: string): Promise<void> {
     const lead = await this.leadRepository.findOne({ where: { id } });
-
     if (!lead) {
       throw new NotFoundException(`Lead with id ${id} not found!`);
     }
-
     lead.deleted_at = new Date();
     await this.leadRepository.save(lead);
   }

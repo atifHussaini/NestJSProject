@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { UpdateRegionDTO, CreateRegionDTO } from './region.dto';
 import { Region } from './region.entity';
 
@@ -56,7 +56,7 @@ export class RegionService {
 
     try {
       await this.regionRepository.update(
-        { id: updateRegion.id, deleted_at: null },
+        { id: updateRegion.id, deleted_at: IsNull() },
         updateRegion,
       );
       return await this.regionRepository.findOne({
@@ -74,7 +74,6 @@ export class RegionService {
     if (!region) {
       throw new NotFoundException(`Region with id ${id} was not found!`);
     }
-
     region.deleted_at = new Date();
     return await this.regionRepository.save(region);
   }

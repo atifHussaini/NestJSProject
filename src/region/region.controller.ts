@@ -55,6 +55,7 @@ export class RegionController {
     return await this.regionService.update(body);
   }
 
+  //Delete a region
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<Region> {
     return await this.regionService.delete(id);
