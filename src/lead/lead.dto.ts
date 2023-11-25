@@ -7,8 +7,8 @@ const LeadLeadScore = Type.Number();
 
 export const CreateLeadDTOSchema = Type.Object({
   contactInfo: LeadContactInfo,
-  propertyId: LeadPropertyId,
   leadScore: LeadLeadScore,
+  propertyId: Type.Optional(LeadPropertyId),
 });
 
 export const UpdateLeadDTOSchema = Type.Object({

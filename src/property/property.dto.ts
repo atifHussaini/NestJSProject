@@ -7,8 +7,8 @@ const PropertyData = Type.Any();
 
 export const CreatePropertyDTOSchema = Type.Object({
   address: PropertyAddress,
-  regionId: PropertyRegionId,
   data: PropertyData,
+  regionId: Type.Optional(PropertyRegionId),
 });
 
 export const UpdatePropertyDTOSchema = Type.Object({
