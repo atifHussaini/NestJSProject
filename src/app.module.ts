@@ -12,17 +12,20 @@ import { LeadModule } from './lead/lead.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      envFilePath: '.local.env',
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
-      username: process.env.DB_USERNAME ?? 'crazy1ndn',
-      password: process.env.DB_PASSWORD ?? 'null',
-      database: process.env.DB_NAME ?? 'crazy1ndn',
+      port: 5432,
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: false,
+      synchronize: true,
     }),
     RegionModule,
-    ConfigModule.forRoot(),
     PropertyModule,
     LeadModule,
     TypeOrmModule.forFeature([Region, Property, Lead]),
