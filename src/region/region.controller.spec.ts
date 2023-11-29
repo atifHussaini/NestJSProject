@@ -27,4 +27,3 @@ describe('RegionController', () => {
     expect(controller).toBeDefined();
   });
 });
-
